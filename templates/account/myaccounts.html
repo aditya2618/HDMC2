@@ -1,0 +1,30 @@
+{% extends 'account/base.html' %}
+{% block content %}
+<div class="container mt-4">
+<h2>My Account</h2>
+  {% if admissions %}
+    <table class="table table-bordered table-striped mt-3">
+      <thead>
+        <tr>
+          <th>Admission Class</th>
+          <th>Approval Status</th>
+          <th>Payment Status</th>
+          <th>Created At</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for admission in admissions %}
+        <tr>
+          <td>{{ admission.admission_class }}</td>
+          <td>{% if admission.is_approved %}Approved{% else %}Pending{% endif %}</td>
+          <td>{{ admission.payment_status }}</td>
+          <td>{{ admission.created_at|date:'Y-m-d H:i' }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>No admissions found.</p>
+  {% endif %}
+</div>
+{% endblock %}

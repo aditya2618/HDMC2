@@ -9,11 +9,15 @@ from django.core.mail import send_mail
 # Razorpay client initialization
 razorpay_client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
 
+from django.contrib.auth.decorators import login_required
+
+@login_required
 def admission_form(request):
     if request.method == 'POST':
         form = AdmissionForm(request.POST, request.FILES)
         if form.is_valid():
             admission = form.save(commit=False)
+            admission.user = request.user
             # Create Razorpay order
             amount = 50000  # e.g. Rs 500.00 (in paise)
             order = razorpay_client.order.create({

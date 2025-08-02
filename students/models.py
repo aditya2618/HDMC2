@@ -53,6 +53,7 @@ class Admission(SoftDeleteModel):
         ('Female', 'Female'),
         ('Third Gender', 'Third Gender'),
     ]
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='admissions')
     EXPERTISE_LEVEL_CHOICES = [
         ('Beginner', 'Beginner'),
         ('Intermediate', 'Intermediate'),
@@ -71,6 +72,9 @@ class Admission(SoftDeleteModel):
     blood_group = models.CharField(max_length=10)
     medical_conditions = models.CharField(max_length=255, blank=True)
     admission_class = models.CharField(max_length=50)
+
+    class Meta:
+        unique_together = ('user', 'admission_class')
     dob = models.DateField()
     age = models.IntegerField()
     sex = models.CharField(max_length=20, choices=SEX_CHOICES)

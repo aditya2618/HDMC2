@@ -30,6 +30,7 @@ urlpatterns = [
     path('gallery/', include('gallery.urls')),
     path('accounts/', include('students.urls')),  # All students URLs under /accounts/
     path('', include('students.urls')),  # Admissions and other student URLs at root
+    path('account/', include('core.urls')),  # Add core URLs for myaccounts page
 ]
 
 if settings.DEBUG:
