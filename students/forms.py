@@ -12,7 +12,7 @@ class ProfileForm(forms.ModelForm):
 class AdmissionForm(forms.ModelForm):
     class Meta:
         model = Admission
-        exclude = ['is_deleted', 'deleted_by', 'deleted_at', 'is_active', 'is_approved']
+        exclude = ['is_deleted', 'deleted_by', 'deleted_at', 'is_active', 'is_approved', 'payment_status', 'razorpay_order_id', 'razorpay_payment_id', 'razorpay_signature']
         widgets = {
             'dob': forms.DateInput(attrs={'type': 'date'}),
             'reason_for_learning': forms.Textarea(attrs={'rows': 3}),

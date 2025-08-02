@@ -91,6 +91,10 @@ class Admission(SoftDeleteModel):
     previous_training_cert = models.FileField(upload_to=training_certs_upload_to, blank=True, null=True)
     is_approved = models.BooleanField(default=False, help_text="Admin approval status for admission")
     created_at = models.DateTimeField(auto_now_add=True)
+    payment_status = models.CharField(max_length=20, default="Pending", choices=[("Pending", "Pending"), ("Paid", "Paid"), ("Failed", "Failed")])
+    razorpay_order_id = models.CharField(max_length=100, blank=True, null=True)
+    razorpay_payment_id = models.CharField(max_length=100, blank=True, null=True)
+    razorpay_signature = models.CharField(max_length=255, blank=True, null=True)
 
     def __str__(self):
         return self.name

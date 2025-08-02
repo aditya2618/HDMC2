@@ -160,3 +160,6 @@ ACCOUNT_EMAIL_VERIFICATION = 'optional'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+RAZORPAY_KEY_ID = 'rzp_test_Wr5wvcWv5dt8yK'
+RAZORPAY_KEY_SECRET = 'YOAFiSFmEb1UuDeI5YsQ8IN4'
