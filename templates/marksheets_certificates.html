@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-4">
+  <h2 class="mb-4">Marksheets & Certificates</h2>
+  <div class="row">
+    <div class="col-md-6">
+      <h4>Marksheets</h4>
+      {% if marksheets %}
+        <table class="table table-striped table-bordered">
+          <thead>
+            <tr>
+              <th>Exam Name</th>
+              <th>Date</th>
+              <th>Subject</th>
+              <th>Marks</th>
+              <th>Grade</th>
+              <th>Download</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for m in marksheets %}
+            <tr>
+              <td>{{ m.exam_name }}</td>
+              <td>{{ m.exam_date }}</td>
+              <td>{{ m.subject }}</td>
+              <td>{{ m.marks_obtained }}/{{ m.max_marks }}</td>
+              <td>{{ m.grade }}</td>
+              <td>
+                {% if m.file_path %}
+                  <a href="{{ m.file_path.url }}" class="btn btn-sm btn-primary" download>Download</a>
+                {% else %}
+                  -
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% else %}
+        <p>No marksheets found.</p>
+      {% endif %}
+    </div>
+    <div class="col-md-6">
+      <h4>Certificates</h4>
+      {% if certificates %}
+        <table class="table table-striped table-bordered">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Event</th>
+              <th>Date</th>
+              <th>Notes</th>
+              <th>Download</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for c in certificates %}
+            <tr>
+              <td>{{ c.certificate_type }}</td>
+              <td>{{ c.event_name }}</td>
+              <td>{{ c.issued_date }}</td>
+              <td>{{ c.notes|default:'-' }}</td>
+              <td>
+                {% if c.file_path %}
+                  <a href="{{ c.file_path.url }}" class="btn btn-sm btn-primary" download>Download</a>
+                {% else %}
+                  -
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% else %}
+        <p>No certificates found.</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,133 @@
+.modern-navbar .navbar-nav .nav-link {
+    color: #fff !important;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+.modern-navbar .navbar-nav .nav-link.active, .modern-navbar .navbar-nav .nav-link:focus, .modern-navbar .navbar-nav .nav-link:hover {
+    color: #eebbc3 !important;
+    text-decoration: underline;
+}
+
+body.heritage-bg {
+    background: #f8f9fa url('/static/motif-bg.png') repeat top left;
+    font-family: 'Montserrat', Arial, sans-serif;
+    color: #3a2323;
+}
+.modern-navbar {
+    background: #181f36;
+    font-family: 'Marcellus', serif;
+    border-bottom: 4px solid #eebbc3;
+}
+.heritage-logo, .footer-logo {
+    font-family: 'Marcellus', serif;
+    font-size: 2rem;
+    color: #fff !important;
+    letter-spacing: 2px;
+}
+.main-content {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(123,31,43,0.07);
+    padding: 2rem 1.5rem;
+    margin-top: 2rem;
+}
+.heritage-hero {
+    position: relative;
+    min-height: 320px;
+    margin-bottom: 0;
+}
+.heritage-hero-img {
+    width: 100%;
+    height: 60vh;
+    object-fit: cover;
+    border-radius: 0 0 32px 32px;
+}
+.heritage-hero-overlay {
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 2;
+    color: #fff;
+    text-shadow: 0 2px 8px #000a;
+}
+.heritage-hero-title {
+    font-family: 'Marcellus', serif;
+    color: #ffe066;
+    text-shadow: 0 2px 8px #7b1f2b;
+}
+.heritage-hero-tagline {
+    font-size: 1.5rem;
+    color: #fffbe6;
+}
+.heritage-cta {
+    background: #e6b800;
+    color: #7b1f2b;
+    border: none;
+    font-weight: bold;
+    border-radius: 30px;
+    box-shadow: 0 2px 8px #7b1f2b22;
+    transition: background 0.2s;
+}
+.heritage-cta:hover {
+    background: #ffd700;
+    color: #7b1f2b;
+}
+.heritage-welcome {
+    background: url('/static/paper-texture.png') repeat;
+    border-radius: 16px;
+    padding: 2rem 1rem;
+    box-shadow: 0 2px 8px #e6b80022;
+}
+.heritage-program-card {
+    background: #fffbe6;
+    border: 2px solid #e6b80033;
+    border-radius: 18px;
+    transition: box-shadow 0.2s;
+}
+.heritage-program-card:hover {
+    box-shadow: 0 4px 16px #e6b80044;
+}
+.heritage-program-icon {
+    font-size: 2.5rem;
+    color: #7b1f2b;
+    display: block;
+}
+.heritage-link {
+    color: #eebbc3;
+    text-decoration: underline;
+    font-weight: 500;
+}
+.heritage-link:hover {
+    color: #fff;
+}
+.heritage-events .list-group-item {
+    background: #fff;
+    border-left: 4px solid #e6b800;
+    border-radius: 0 12px 12px 0;
+    margin-bottom: 0.5rem;
+}
+.heritage-testimonial-card {
+    background: #fff;
+    border-left: 4px solid #7b1f2b;
+    border-radius: 0 18px 18px 0;
+}
+.modern-footer {
+    background: #181f36;
+    color: #fff;
+    font-family: 'Marcellus', serif;
+    border-top: 4px solid #eebbc3;
+}
+.modern-footer .footer-logo {
+    font-size: 1.5rem;
+    color: #fff;
+    font-family: 'Marcellus', serif;
+}
+.heritage-motif {
+    color: #eebbc3;
+    font-size: 1.2rem;
+    margin: 0 0.5rem;
+}
+@media (max-width: 768px) {
+    .main-content { padding: 1rem 0.5rem; }
+    .heritage-hero-img { height: 32vh; border-radius: 0 0 16px 16px; }
+    .heritage-hero-title { font-size: 2rem; }
+    .heritage-hero-tagline { font-size: 1.1rem; }
+}

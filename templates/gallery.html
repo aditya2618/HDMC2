@@ -1,0 +1,174 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Gallery | HDMC{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <!-- Gallery Header -->
+  <div class="text-center mb-5">
+    <h1 class="fw-bold text-primary mb-3">
+      <i class="bi bi-images me-2"></i>Our Gallery
+    </h1>
+    <p class="lead text-muted">Browse photos and videos from our events, classes, and cultural performances</p>
+  </div>
+
+  <!-- Filter Buttons -->
+  <div class="text-center mb-4">
+    <div class="btn-group" role="group" aria-label="Gallery Filter">
+      <input type="radio" class="btn-check" name="filter" id="filter-all" checked>
+      <label class="btn btn-outline-primary" for="filter-all">All</label>
+      
+      <input type="radio" class="btn-check" name="filter" id="filter-photos">
+      <label class="btn btn-outline-primary" for="filter-photos">Photos</label>
+      
+      <input type="radio" class="btn-check" name="filter" id="filter-videos">
+      <label class="btn btn-outline-primary" for="filter-videos">Videos</label>
+    </div>
+  </div>
+
+  <!-- Gallery Grid -->
+  <div class="row g-4" id="gallery-container">
+    {% for media in gallery_items %}
+    <div class="col-lg-4 col-md-6 gallery-item" data-type="{{ media.media_type }}">
+      <div class="card h-100 shadow-sm border-0 gallery-card">
+        {% if media.media_type == 'photo' %}
+          <div class="position-relative overflow-hidden">
+            <img src="{{ media.file_path.url }}" 
+                 class="card-img-top gallery-image" 
+                 alt="{{ media.title }}" 
+                 style="height: 250px; object-fit: cover; transition: transform 0.3s ease;"
+                 data-bs-toggle="modal" 
+                 data-bs-target="#imageModal{{ forloop.counter }}">
+            <div class="gallery-overlay">
+              <i class="bi bi-zoom-in text-white fs-2"></i>
+            </div>
+          </div>
+        {% else %}
+          <div class="card-img-top d-flex align-items-center justify-content-center bg-gradient" 
+               style="height: 250px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+            <div class="text-center text-white">
+              <i class="bi bi-play-circle fs-1 mb-2"></i>
+              <p class="mb-0">Video Content</p>
+            </div>
+          </div>
+        {% endif %}
+        
+        <div class="card-body">
+          <h5 class="card-title fw-bold text-dark">{{ media.title }}</h5>
+          <p class="card-text text-muted">{{ media.description|truncatechars:100 }}</p>
+          <div class="d-flex justify-content-between align-items-center">
+            <small class="text-muted">
+              <i class="bi bi-calendar-event me-1"></i>{{ media.uploaded_at|date:"M d, Y" }}
+            </small>
+            <span class="badge bg-primary">{{ media.media_type|capfirst }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal for Image Viewing -->
+    {% if media.media_type == 'photo' %}
+    <div class="modal fade" id="imageModal{{ forloop.counter }}" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0">
+          <div class="modal-header border-0">
+            <h5 class="modal-title">{{ media.title }}</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body p-0">
+            <img src="{{ media.file_path.url }}" class="img-fluid w-100" alt="{{ media.title }}">
+          </div>
+          <div class="modal-footer border-0">
+            <p class="text-muted mb-0">{{ media.description }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+  </div>
+
+  <!-- Empty State -->
+  <div id="empty-state" class="text-center py-5" style="display: none;">
+    <i class="bi bi-image text-muted fs-1 mb-3"></i>
+    <h4 class="text-muted">No items found</h4>
+    <p class="text-muted">Try selecting a different filter option.</p>
+  </div>
+</div>
+
+<style>
+.gallery-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.gallery-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+}
+
+.gallery-image {
+  transition: transform 0.3s ease;
+}
+
+.gallery-card:hover .gallery-image {
+  transform: scale(1.05);
+}
+
+.gallery-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.gallery-card:hover .gallery-overlay {
+  opacity: 1;
+}
+
+.btn-check:checked + .btn-outline-primary {
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+  color: white;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const filterButtons = document.querySelectorAll('input[name="filter"]');
+  const galleryItems = document.querySelectorAll('.gallery-item');
+  const emptyState = document.getElementById('empty-state');
+  
+  filterButtons.forEach(button => {
+    button.addEventListener('change', function() {
+      const filterValue = this.id.replace('filter-', '');
+      let visibleCount = 0;
+      
+      galleryItems.forEach(item => {
+        const itemType = item.getAttribute('data-type');
+        
+        if (filterValue === 'all' || filterValue === itemType + 's' || filterValue === itemType) {
+          item.style.display = 'block';
+          visibleCount++;
+        } else {
+          item.style.display = 'none';
+        }
+      });
+      
+      // Show/hide empty state
+      if (visibleCount === 0) {
+        emptyState.style.display = 'block';
+      } else {
+        emptyState.style.display = 'none';
+      }
+    });
+  });
+});
+</script>
+{% endblock %}

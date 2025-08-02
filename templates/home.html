@@ -1,0 +1,212 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Home | HDMC{% endblock %}
+{% block content %}
+<!-- Hero Banner -->
+<section class="heritage-hero position-relative text-center text-white mb-5">
+  {% if hero_images %}
+    <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        {% for image in hero_images %}
+        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+          <img src="{{ image.file_path.url }}" class="img-fluid w-100 heritage-hero-img" alt="{{ image.title }}" style="object-fit:cover; height: 60vh; min-height:320px; filter: brightness(0.7);">
+        </div>
+        {% endfor %}
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      </button>
+    </div>
+  {% else %}
+    <img src="{% static 'hero.jpg' %}" class="img-fluid w-100 heritage-hero-img" alt="A group of students performing classical dance on stage" style="object-fit:cover; height: 60vh; min-height:320px; filter: brightness(0.7);">
+  {% endif %}
+  <div class="heritage-hero-overlay position-absolute top-0 start-0 w-100 h-100 d-flex flex-column justify-content-center align-items-center">
+    <h1 class="display-3 fw-bold heritage-hero-title">Harimati Dance and Music Centre</h1>
+    <p class="lead heritage-hero-tagline">Experience the Rhythm of Tradition</p>
+    <a href="/admissions/" class="btn btn-lg btn-warning px-5 py-2 mt-3 heritage-cta">Enroll Now</a>
+  </div>
+</section>
+
+<!-- Welcome Message -->
+<section class="heritage-welcome text-center mb-5">
+  <h2 class="fw-bold mb-3">Welcome to Our Cultural Family</h2>
+  <p class="fs-5 mx-auto" style="max-width: 700px;">At HDMC, we celebrate the vibrant heritage of Manipuri classical and folk arts. Our institute offers dance and music classes for all ages, blending tradition with a modern approach. Whether you are a child, adult, or senior, you’ll find a welcoming space to learn, perform, and grow.</p>
+</section>
+
+<!-- Programs/Classes Overview -->
+<section class="heritage-programs mb-5">
+  <div class="row g-4 justify-content-center">
+    <div class="col-6 col-md-3">
+      <div class="card h-100 text-center border-0 shadow heritage-program-card">
+        <div class="card-body">
+          <span class="heritage-program-icon mb-2">&#x1F483;</span>
+          <h5 class="card-title">Classical Dance</h5>
+          <p class="card-text">Bharatanatyam, Kathak, Odissi & more<br><span class="text-muted small">All ages</span></p>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="card h-100 text-center border-0 shadow heritage-program-card">
+        <div class="card-body">
+          <span class="heritage-program-icon mb-2">&#x1F3B6;</span>
+          <h5 class="card-title">Folk Music</h5>
+          <p class="card-text">Vocal & Instrumental<br><span class="text-muted small">All ages</span></p>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="card h-100 text-center border-0 shadow heritage-program-card">
+        <div class="card-body">
+          <span class="heritage-program-icon mb-2">&#x1F9D2;</span>
+          <h5 class="card-title">Kids Classes</h5>
+          <p class="card-text">Fun, creative learning<br><span class="text-muted small">Ages 4–12</span></p>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="card h-100 text-center border-0 shadow heritage-program-card">
+        <div class="card-body">
+          <span class="heritage-program-icon mb-2">&#x1F464;</span>
+          <h5 class="card-title">Adult Classes</h5>
+          <p class="card-text">Beginner to advanced<br><span class="text-muted small">Ages 13+</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Recent Gallery Highlights -->
+{% if recent_gallery %}
+<section class="heritage-gallery-highlights mb-5">
+  <h3 class="fw-bold mb-3 text-center">Recent Highlights</h3>
+  <div class="row g-3">
+    {% for media in recent_gallery %}
+    <div class="col-6 col-md-4 col-lg-2">
+      <div class="card h-100 border-0 shadow-sm">
+        {% if media.media_type == 'photo' %}
+        <img src="{{ media.file_path.url }}" class="card-img-top" alt="{{ media.title }}" style="height: 150px; object-fit: cover;">
+        {% else %}
+        <div class="card-img-top d-flex align-items-center justify-content-center bg-light" style="height: 150px;">
+          <i class="fas fa-play-circle fa-3x text-primary"></i>
+        </div>
+        {% endif %}
+        <div class="card-body p-2">
+          <p class="card-text small mb-0">{{ media.title|truncatechars:30 }}</p>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <div class="text-center mt-3">
+    <a href="/gallery/" class="btn btn-outline-warning">View Full Gallery</a>
+  </div>
+</section>
+{% endif %}
+
+<!-- Recent Performances -->
+{% if recent_performances %}
+<section class="heritage-recent-performances mb-5">
+  <h3 class="fw-bold mb-3 text-center">Recent Performances</h3>
+  <div class="row justify-content-center g-4">
+    {% for performance in recent_performances %}
+    <div class="col-md-6">
+      <div class="card border-0 shadow-sm">
+        {% if performance.image %}
+        <img src="{{ performance.image.url }}" class="card-img-top" alt="{{ performance.title }}" style="height: 200px; object-fit: cover;">
+        {% endif %}
+        <div class="card-body">
+          <h5 class="card-title">{{ performance.title }}</h5>
+          <p class="card-text">{{ performance.description|truncatechars:100 }}</p>
+          <small class="text-muted">{{ performance.event_date|date:"M d, Y" }} at {{ performance.venue }}</small>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <div class="text-center mt-3">
+    <a href="/performance/" class="btn btn-outline-warning">View All Performances</a>
+  </div>
+</section>
+{% endif %}
+
+<!-- Upcoming Events & News -->
+<section class="heritage-events mb-5">
+  <h3 class="fw-bold mb-3 text-center">Upcoming Events & News</h3>
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      {% if upcoming_events or active_notices %}
+      <ul class="list-group list-group-flush">
+        {% for event in upcoming_events %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <div>
+            <span><strong>{{ event.title }}</strong></span>
+            {% if event.venue %}
+            <br><small class="text-muted">{{ event.venue }}</small>
+            {% endif %}
+          </div>
+          <span class="badge bg-warning text-dark">{{ event.event_date|date:"M d, Y" }}</span>
+        </li>
+        {% endfor %}
+        
+        {% for notice in active_notices %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <span><strong>{{ notice.title }}</strong></span>
+          <span class="badge bg-info text-white">Admission Notice</span>
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <span>Annual Recital: <strong>Nritya Utsav</strong></span>
+          <span class="badge bg-warning text-dark">Aug 15, 2025</span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <span>Tabla Workshop with Guru Sharma</span>
+          <span class="badge bg-warning text-dark">Sep 5, 2025</span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <span>New Batch: Kids Folk Dance</span>
+          <span class="badge bg-warning text-dark">Sep 20, 2025</span>
+        </li>
+      </ul>
+      {% endif %}
+      <div class="text-end mt-2">
+        <a href="/performance/" class="heritage-link">View All Events</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials -->
+<section class="heritage-testimonials mb-5">
+  <h3 class="fw-bold mb-3 text-center">What Our Students Say</h3>
+  <div class="row justify-content-center g-4">
+    <div class="col-md-5">
+      <div class="card border-0 shadow-sm heritage-testimonial-card">
+        <div class="card-body">
+          <p class="mb-2">“HDMC is like a second home. My daughter has grown so much in confidence and skill!”</p>
+          <div class="d-flex align-items-center">
+            <img src="/static/testimonial1.jpg" alt="Parent testimonial" class="rounded-circle me-2" width="48" height="48">
+            <span class="fw-bold">Mrs. S. Patel</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-5">
+      <div class="card border-0 shadow-sm heritage-testimonial-card">
+        <div class="card-body">
+          <p class="mb-2">“The teachers are inspiring and the atmosphere is so welcoming. I love learning here!”</p>
+          <div class="d-flex align-items-center">
+            <img src="/static/testimonial2.jpg" alt="Student testimonial" class="rounded-circle me-2" width="48" height="48">
+            <span class="fw-bold">Amit K.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

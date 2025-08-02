@@ -1,0 +1,30 @@
+
+{% extends 'base.html' %}
+{% block title %}Student Profile | HDMC{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <h1 class="mb-4 text-center">Student Profile</h1>
+  {% if profile %}
+    <div class="card shadow border-3 mx-auto" style="max-width: 600px; border-color:#007bff;">
+      <div class="card-body p-4">
+        <h3 class="card-title text-primary mb-3">{{ profile.user.get_full_name|default:profile.user.username }}</h3>
+        <ul class="list-group list-group-flush mb-3">
+          <li class="list-group-item"><strong>Email:</strong> {{ profile.user.email }}</li>
+          <li class="list-group-item"><strong>Phone:</strong> {{ profile.phone|default:'N/A' }}</li>
+          <li class="list-group-item"><strong>Address:</strong> {{ profile.address|default:'N/A' }}</li>
+          <li class="list-group-item"><strong>Date of Birth:</strong> {{ profile.dob|date:'d M Y'|default:'N/A' }}</li>
+          <li class="list-group-item"><strong>Gender:</strong> {{ profile.gender|default:'N/A' }}</li>
+        </ul>
+        <div class="text-center">
+          {% if profile.photo %}
+            <img src="{{ profile.photo.url }}" class="img-fluid rounded shadow mb-2" style="width:120px; height:120px; object-fit:cover; border:3px solid #007bff;" alt="Profile Photo">
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  {% else %}
+    <div class="alert alert-info">Profile data is not available.</div>
+  {% endif %}
+</div>
+{% endblock %}

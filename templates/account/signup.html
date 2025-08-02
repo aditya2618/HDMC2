@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% load socialaccount %}
+{% block title %}Sign Up | HDMC{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6 col-lg-5">
+    <div class="card shadow-lg border-0 rounded-4">
+      <div class="card-body p-5">
+        <div class="text-center mb-4">
+          <h2 class="fw-bold text-success mb-2">Join HDMC</h2>
+          <p class="text-muted">Create your account to get started</p>
+        </div>
+        <form method="post" action="{% url 'account_signup' %}">
+          {% csrf_token %}
+          {% for field in form %}
+            <div class="mb-4">
+              <label for="{{ field.id_for_label }}" class="form-label fw-semibold text-dark">{{ field.label }}</label>
+              {% if field.field.widget.input_type == 'password' %}
+                <input type="password" class="form-control form-control-lg rounded-3 border-2" id="{{ field.id_for_label }}" name="{{ field.name }}" {% if field.value %}value="{{ field.value }}"{% endif %} placeholder="Enter your {{ field.label|lower }}" required>
+              {% elif field.field.widget.input_type == 'email' or 'email' in field.name %}
+                <input type="email" class="form-control form-control-lg rounded-3 border-2" id="{{ field.id_for_label }}" name="{{ field.name }}" {% if field.value %}value="{{ field.value }}"{% endif %} placeholder="Enter your {{ field.label|lower }}" required>
+              {% else %}
+                <input type="text" class="form-control form-control-lg rounded-3 border-2" id="{{ field.id_for_label }}" name="{{ field.name }}" {% if field.value %}value="{{ field.value }}"{% endif %} placeholder="Enter your {{ field.label|lower }}" required>
+              {% endif %}
+              {% if field.errors %}
+                <div class="text-danger small mt-1">
+                  {% for error in field.errors %}
+                    <div><i class="bi bi-exclamation-circle"></i> {{ error }}</div>
+                  {% endfor %}
+                </div>
+              {% endif %}
+            </div>
+          {% endfor %}
+          <button type="submit" class="btn btn-success btn-lg w-100 rounded-3 fw-semibold py-3 mb-3">
+            <i class="bi bi-person-plus me-2"></i>Create Account
+          </button>
+        </form>
+        <div class="text-center">
+          <p class="text-muted mb-3">Already have an account?</p>
+          <a href="{% url 'account_login' %}" class="btn btn-outline-success rounded-3 px-4">Sign In</a>
+        </div>
+        
+        <div class="divider my-4">
+          <hr class="border-top">
+          <span class="position-absolute start-50 translate-middle bg-white px-3 text-muted small">Or sign up with</span>
+        </div>
+        
+        <div class="d-grid gap-2">
+          {% providers_media_js %}
+          {% if 'google' in socialaccount_providers %}
+            <a href="{% provider_login_url 'google' %}" class="btn btn-outline-danger rounded-3 py-2">
+              <i class="bi bi-google me-2"></i>Sign up with Google
+            </a>
+          {% endif %}
+          {% if 'facebook' in socialaccount_providers %}
+            <a href="{% provider_login_url 'facebook' %}" class="btn btn-outline-primary rounded-3 py-2">
+              <i class="bi bi-facebook me-2"></i>Sign up with Facebook
+            </a>
+          {% endif %}
+          {% if 'microsoft' in socialaccount_providers %}
+            <a href="{% provider_login_url 'microsoft' %}" class="btn btn-outline-info rounded-3 py-2">
+              <i class="bi bi-microsoft me-2"></i>Sign up with Microsoft
+            </a>
+          {% endif %}
+          {% if 'apple' in socialaccount_providers %}
+            <a href="{% provider_login_url 'apple' %}" class="btn btn-outline-dark rounded-3 py-2">
+              <i class="bi bi-apple me-2"></i>Sign up with Apple
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.divider {
+  position: relative;
+}
+.form-control:focus {
+  border-color: #198754;
+  box-shadow: 0 0 0 0.2rem rgba(25, 135, 84, 0.25);
+}
+.card {
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.95);
+}
+</style>
+{% endblock %}

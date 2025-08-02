@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-4">
+  <h2 class="mb-4">Admissions</h2>
+  {% if notices %}
+    {% for notice in notices %}
+      <div class="card mb-3">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">{{ notice.title }}</h5>
+        </div>
+        <div class="card-body">
+          <p>{{ notice.content|linebreaks }}</p>
+          <p><strong>Available Classes:</strong> {{ notice.available_classes }}</p>
+        </div>
+      </div>
+    {% endfor %}
+  {% else %}
+    <div class="alert alert-info">No admission notices at this time.</div>
+  {% endif %}
+  <div class="text-center mt-4">
+    <a href="{% url 'admission_form' %}" class="btn btn-lg btn-success">Apply for Admission</a>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+{% block title %}Admin Dashboard | HDMC{% endblock %}
+{% block content %}
+<div class="container py-4">
+  <h2 class="mb-4 text-center">Admin Dashboard</h2>
+  <div class="row mb-4">
+    <div class="col-md-3">
+      <div class="card text-bg-primary mb-3">
+        <div class="card-body">
+          <h5 class="card-title">Total Students</h5>
+          <p class="card-text display-6">{{ stats.total_students }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-bg-warning mb-3">
+        <div class="card-body">
+          <h5 class="card-title">Pending Approvals</h5>
+          <p class="card-text display-6">{{ stats.pending_approvals }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-bg-success mb-3">
+        <div class="card-body">
+          <h5 class="card-title">Performances</h5>
+          <p class="card-text display-6">{{ stats.total_performances }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-bg-info mb-3">
+        <div class="card-body">
+          <h5 class="card-title">Gallery Items</h5>
+          <p class="card-text display-6">{{ stats.total_gallery }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mb-4">
+    <div class="col-md-6">
+      <div class="card mb-3">
+        <div class="card-header bg-success text-white">Upcoming Events</div>
+        <ul class="list-group list-group-flush">
+          {% for perf in upcoming %}
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span>{{ perf.title }} ({{ perf.event_date }})</span>
+            <a href="{% url 'admin:core_performance_change' perf.id %}" class="btn btn-sm btn-outline-primary">Edit</a>
+          </li>
+          {% empty %}
+          <li class="list-group-item">No upcoming events.</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card mb-3">
+        <div class="card-header bg-warning text-white">Pending Student Approvals</div>
+        <ul class="list-group list-group-flush">
+          {% for student in pending_students %}
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span>{{ student.full_name }} ({{ student.email }})</span>
+            <a href="{% url 'admin:core_student_change' student.id %}" class="btn btn-sm btn-outline-success">Review</a>
+          </li>
+          {% empty %}
+          <li class="list-group-item">No pending approvals.</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="row mb-4">
+    <div class="col-md-6">
+      <div class="card mb-3">
+        <div class="card-header bg-info text-white">Recent Gallery Uploads</div>
+        <ul class="list-group list-group-flush">
+          {% for media in recent_gallery %}
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span>{{ media.title }}</span>
+            <a href="{% url 'admin:core_gallerymedia_change' media.id %}" class="btn btn-sm btn-outline-primary">Edit</a>
+          </li>
+          {% empty %}
+          <li class="list-group-item">No recent uploads.</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card mb-3">
+        <div class="card-header bg-secondary text-white">Admission Notices</div>
+        <ul class="list-group list-group-flush">
+          {% for notice in notices %}
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span>{{ notice.title }}</span>
+            <a href="{% url 'admin:core_admissionnotice_change' notice.id %}" class="btn btn-sm btn-outline-primary">Edit</a>
+          </li>
+          {% empty %}
+          <li class="list-group-item">No notices.</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="row mb-4">
+    <div class="col-md-12">
+      <div class="card mb-3">
+        <div class="card-header bg-dark text-white">Recent Contact Messages</div>
+        <ul class="list-group list-group-flush">
+          {% for msg in recent_contacts %}
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span>{{ msg.name }} ({{ msg.email }}) - {{ msg.subject }}</span>
+            <a href="{% url 'admin:core_contactmessage_change' msg.id %}" class="btn btn-sm btn-outline-primary">View</a>
+          </li>
+          {% empty %}
+          <li class="list-group-item">No recent messages.</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12 text-center">
+      <a href="{% url 'admin:index' %}" class="btn btn-lg btn-primary">Go to Full Admin</a>
+    </div>
+  </div>
+</div>
+{% endblock %}
