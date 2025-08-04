@@ -2,6 +2,7 @@ import razorpay
 from django.conf import settings
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
 from .models import Admission
 from .forms import AdmissionForm
 from django.core.mail import send_mail
@@ -9,11 +10,23 @@ from django.core.mail import send_mail
 # Razorpay client initialization
 razorpay_client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
 
+@login_required
 def admission_form(request):
+    # Check if user already has an admission
+    existing_admission = Admission.objects.filter(user=request.user).first()
+    if existing_admission:
+        return render(request, 'admission_form.html', {
+            'form': None, 
+            'existing_admission': existing_admission,
+            'error': 'You have already submitted an admission application.'
+        })
+    
     if request.method == 'POST':
         form = AdmissionForm(request.POST, request.FILES)
         if form.is_valid():
             admission = form.save(commit=False)
+            # Associate admission with current user
+            admission.user = request.user
             # Create Razorpay order
             amount = 50000  # e.g. Rs 500.00 (in paise)
             order = razorpay_client.order.create({

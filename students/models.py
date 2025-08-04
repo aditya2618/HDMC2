@@ -58,6 +58,10 @@ class Admission(SoftDeleteModel):
         ('Intermediate', 'Intermediate'),
         ('Advanced', 'Advanced'),
     ]
+    
+    # Link admission to user (nullable for existing records)
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='admissions', null=True, blank=True)
+    
     name = models.CharField(max_length=255)
     aadhaar_no = models.CharField(max_length=20)
     father_mother_guardian = models.CharField(max_length=255)

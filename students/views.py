@@ -48,19 +48,38 @@ def documents(request):
 
 @login_required
 def profile(request):
-    from .models import Profile
+    from .models import Profile, Admission
     profile = None
+    admission = None
+    blogs = []  # Placeholder for blogs - will need actual blog model later
+    
     if request.user.is_authenticated:
         try:
             profile = Profile.objects.get(user=request.user)
         except Profile.DoesNotExist:
             profile = None
-    return render(request, 'profile.html', {'profile': profile})
+        
+        # Get admission status by user foreign key (fallback to email for existing records)
+        try:
+            admission = Admission.objects.get(user=request.user)
+        except Admission.DoesNotExist:
+            # Fallback for existing records without user association
+            try:
+                admission = Admission.objects.get(email=request.user.email, user__isnull=True)
+                # Automatically associate with current user
+                admission.user = request.user
+                admission.save()
+            except Admission.DoesNotExist:
+                admission = None
+    
+    return render(request, 'profile.html', {
+        'profile': profile,
+        'admission': admission,
+        'blogs': blogs
+    })
 
 @login_required
-def user_profile_view(request):
-    profile = get_object_or_404(Profile, user=request.user)
-    return render(request, 'profile_student.html', {'profile': profile})
+
 
 def admissions(request):
     notices = AdmissionNotice.objects.filter(is_active=True).order_by('-created_at')

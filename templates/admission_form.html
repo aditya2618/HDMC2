@@ -14,13 +14,29 @@
             <p class="mb-0 opacity-90 text-dark">Join our cultural heritage programs</p>
           </div>
           <div class="card-body p-5">
-            {% if submitted %}
+            {% if existing_admission %}
+              <div class="alert alert-warning alert-dismissible fade show rounded-3" role="alert">
+                <i class="bi bi-exclamation-triangle me-2"></i>
+                <strong>Application Already Submitted!</strong> You have already submitted an admission application.
+                <div class="mt-2">
+                  <a href="{% url 'profile' %}" class="btn btn-primary btn-sm">View Application Status</a>
+                </div>
+              </div>
+            {% elif error %}
+              <div class="alert alert-danger alert-dismissible fade show rounded-3" role="alert">
+                <i class="bi bi-x-circle me-2"></i>
+                <strong>Error:</strong> {{ error }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+              </div>
+            {% elif submitted %}
               <div class="alert alert-success alert-dismissible fade show rounded-3" role="alert">
                 <i class="bi bi-check-circle me-2"></i>
                 <strong>Success!</strong> Your admission form has been submitted! We will contact you after admin approval.
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
               </div>
             {% endif %}
+            
+            {% if form %}
             <form method="post" enctype="multipart/form-data" class="mt-4">
               {% csrf_token %}
               {% for field in form %}
@@ -87,6 +103,7 @@
                 </small>
               </div>
             </form>
+            {% endif %}
           </div>
         </div>
       </div>

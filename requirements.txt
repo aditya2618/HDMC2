@@ -1,3 +1,8 @@
 Django>=5.2.4
 Pillow
 razorpay
+django-allauth
+PyJWT
+cryptography
+setuptools
+requests

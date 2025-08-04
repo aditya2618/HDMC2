@@ -4,9 +4,9 @@ from core.admin import SoftDeleteAdmin
 
 @admin.register(Admission)
 class AdmissionAdmin(SoftDeleteAdmin):
-    list_display = ('name', 'email', 'admission_class', 'is_approved', 'created_at')
+    list_display = ('name', 'user', 'email', 'admission_class', 'is_approved', 'created_at')
     list_filter = ('is_approved', 'admission_class', 'created_at', 'is_deleted')
-    search_fields = ('name', 'email', 'aadhaar_no')
+    search_fields = ('name', 'email', 'aadhaar_no', 'user__username')
     actions = ['approve_admissions'] + SoftDeleteAdmin.actions
 
     def approve_admissions(self, request, queryset):

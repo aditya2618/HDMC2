@@ -1,36 +1,145 @@
+
 {% extends 'base.html' %}
 {% block title %}Profile | HDMC{% endblock %}
 {% block content %}
-<div class="row justify-content-center">
-  <div class="col-md-8">
-    <div class="card shadow-sm mb-4">
-      <div class="card-header bg-dark text-white">
-        <h4 class="mb-0">User Profile</h4>
-      </div>
-      <div class="card-body">
-        <h5 class="mb-3">Profile Details</h5>
-        {% if profile %}
-        <div class="mb-3 text-end">
-          <a href="{% url 'profile_edit' %}" class="btn btn-outline-primary">Edit Profile</a>
+<div class="container-fluid py-4">
+  <h1 class="mb-4 text-center">User Profile</h1>
+  {% if profile %}
+    <div class="card shadow border-3 mx-auto" style="max-width: 1200px; border-color:#007bff;">
+      <div class="card-body p-4">
+        <div class="row mb-3">
+          <div class="col-md-3 text-center">
+            {% if profile.photo %}
+              <img src="{{ profile.photo.url }}" class="img-fluid rounded shadow" style="width:100px; height:100px; object-fit:cover; border:2px solid #007bff;" alt="Profile Photo">
+            {% else %}
+              <span class="text-muted">No Photo</span>
+            {% endif %}
+          </div>
+          <div class="col-md-9">
+            <table class="table table-sm table-borderless">
+              <tr><th class="text-end">Full Name:</th><td>{{ profile.full_name }}</td></tr>
+              <tr><th class="text-end">Username:</th><td>{{ profile.user.username }}</td></tr>
+              <tr><th class="text-end">Email:</th><td>{{ profile.user.email }}</td></tr>
+              <tr><th class="text-end">Bio:</th><td>{{ profile.bio }}</td></tr>
+              <tr><th class="text-end">Phone:</th><td>{{ profile.phone }}</td></tr>
+              <tr><th class="text-end">Address:</th><td>{{ profile.address }}</td></tr>
+              <tr><th class="text-end">Date of Birth:</th><td>{{ profile.dob|date:'d M Y' }}</td></tr>
+              <tr><th class="text-end">Gender:</th><td>{{ profile.gender }}</td></tr>
+              <tr><th class="text-end">Created At:</th><td>{{ profile.created_at|date:'d M Y H:i' }}</td></tr>
+              <tr><th class="text-end">Updated At:</th><td>{{ profile.updated_at|date:'d M Y H:i' }}</td></tr>
+            </table>
+            <div class="text-end mb-2">
+              <a href="{% url 'profile_edit' %}" class="btn btn-outline-primary btn-sm">Edit Profile</a>
+            </div>
+            <hr>
+            <h5 class="mb-3">Admission Status</h5>
+            {% if admission %}
+              <div class="row">
+                <div class="col-md-6">
+                  <table class="table table-sm table-borderless">
+                    <tr><th class="text-end">Applied For:</th><td>{{ admission.art_form }} ({{ admission.admission_class }})</td></tr>
+                    <tr><th class="text-end">Application Status:</th>
+                      <td>
+                        {% if admission.is_approved %}
+                          <span class="badge bg-success">Approved</span>
+                        {% else %}
+                          <span class="badge bg-warning">Under Review</span>
+                        {% endif %}
+                      </td>
+                    </tr>
+                    <tr><th class="text-end">Payment Status:</th>
+                      <td>
+                        {% if admission.payment_status == 'Paid' %}
+                          <span class="badge bg-success">Paid</span>
+                        {% elif admission.payment_status == 'Failed' %}
+                          <span class="badge bg-danger">Failed</span>
+                        {% else %}
+                          <span class="badge bg-warning">Pending</span>
+                        {% endif %}
+                      </td>
+                    </tr>
+                    <tr><th class="text-end">Application ID:</th><td>#{{ admission.id }}</td></tr>
+                    <tr><th class="text-end">Applied On:</th><td>{{ admission.created_at|date:'d M Y' }}</td></tr>
+                  </table>
+                </div>
+                <div class="col-md-6 text-end">
+                  {% if admission.payment_status == 'Paid' %}
+                    <a href="#" class="btn btn-success">Download Receipt</a>
+                  {% elif admission.payment_status == 'Pending' %}
+                    <a href="#" class="btn btn-warning">Pay Now via Razorpay</a>
+                  {% endif %}
+                </div>
+              </div>
+            {% else %}
+              <div class="text-center py-4">
+                <span class="badge bg-secondary mb-3">No Application Submitted</span>
+                <br>
+                <a href="{% url 'admission_form' %}" class="btn btn-primary">Apply for Admission</a>
+              </div>
+            {% endif %}
+            <hr>
+            <h5 class="mb-3">My Blogs</h5>
+            <div class="row">
+              <div class="col-md-8">
+                <div class="mb-3">
+                  <a href="#" class="btn btn-outline-primary btn-sm">Write New Blog</a>
+                </div>
+                <div class="row">
+                  <!-- Static Blog Posts for now -->
+                  <div class="col-md-6 mb-3">
+                    <div class="card">
+                      <div class="card-body">
+                        <h6 class="card-title">My Journey in Classical Dance</h6>
+                        <p class="card-text text-muted">A reflection on my learning experience at HDMC...</p>
+                        <small class="text-muted">Published: 15 Jan 2025</small>
+                        <div class="mt-2">
+                          <a href="#" class="btn btn-sm btn-outline-secondary">Edit</a>
+                          <a href="#" class="btn btn-sm btn-outline-danger">Delete</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <div class="card">
+                      <div class="card-body">
+                        <h6 class="card-title">Understanding Rhythm and Movement</h6>
+                        <p class="card-text text-muted">Exploring the fundamentals of dance rhythm...</p>
+                        <small class="text-muted">Published: 02 Feb 2025</small>
+                        <div class="mt-2">
+                          <a href="#" class="btn btn-sm btn-outline-secondary">Edit</a>
+                          <a href="#" class="btn btn-sm btn-outline-danger">Delete</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Empty state when no blogs -->
+                  <div class="col-12">
+                    <div class="alert alert-light text-center">
+                      <i class="text-muted">No blogs written yet. Start sharing your dance journey!</i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="card bg-light">
+                  <div class="card-body">
+                    <h6 class="card-title">Blog Statistics</h6>
+                    <ul class="list-unstyled">
+                      <li><strong>Total Blogs:</strong> 2</li>
+                      <li><strong>Published:</strong> 2</li>
+                      <li><strong>Draft:</strong> 0</li>
+                      <li><strong>Total Views:</strong> 145</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <ul class="list-group mb-3">
-          <li class="list-group-item"><strong>Full Name:</strong> {{ profile.full_name }}</li>
-          <li class="list-group-item"><strong>Username:</strong> {{ profile.user.username }}</li>
-          <li class="list-group-item"><strong>Email:</strong> {{ profile.user.email }}</li>
-          <li class="list-group-item"><strong>Bio:</strong> {{ profile.bio }}</li>
-          <li class="list-group-item"><strong>Phone:</strong> {{ profile.phone }}</li>
-          <li class="list-group-item"><strong>Address:</strong> {{ profile.address }}</li>
-          <li class="list-group-item"><strong>Date of Birth:</strong> {{ profile.dob }}</li>
-          <li class="list-group-item"><strong>Gender:</strong> {{ profile.gender }}</li>
-          <li class="list-group-item"><strong>Photo:</strong> {% if profile.photo %}<img src="{{ profile.photo.url }}" alt="Profile Photo" class="img-thumbnail" style="max-width:120px;" />{% else %}No photo{% endif %}</li>
-          <li class="list-group-item"><strong>Created At:</strong> {{ profile.created_at }}</li>
-          <li class="list-group-item"><strong>Updated At:</strong> {{ profile.updated_at }}</li>
-        </ul>
-        {% else %}
-        <div class="alert alert-warning mt-3">No profile data found for this user.</div>
-        {% endif %}
       </div>
     </div>
-  </div>
+  {% else %}
+    <div class="alert alert-info">Profile data is not available.</div>
+  {% endif %}
 </div>
 {% endblock %}
